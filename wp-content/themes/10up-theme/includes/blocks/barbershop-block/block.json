@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "title": "Barbershop Block",
+  "description": "A block that lets users book available time",
+  "textdomain": "tenup-theme",
+  "name": "tenup/barbershop",
+  "icon": "feedback",
+  "category": "widgets",
+  "attributes":{
+    "title": {
+      "type" : "string"
+    }
+  },
+  "example": {
+    "attributes":{
+      "title": "Barbershop Block"
+    }
+  },
+  "supports": {
+    "html": false
+  },
+  "editorScript": "file:./index.js"
+}
