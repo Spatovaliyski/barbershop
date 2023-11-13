@@ -1,3 +1,4 @@
 import '../../css/frontend/style.scss';
 
-// import foo from './components/bar';
+// Import blocks
+import './blocks/barbershop-block';

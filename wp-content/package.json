@@ -2,7 +2,7 @@
   "name": "tenup-wp-scaffold",
   "version": "1.0.0",
   "description": "Project Description",
-  "homepage": "http://localhost/10up",
+  "homepage": "http://local.10up.test/",
   "repository": {
     "type": "git",
     "url": ""

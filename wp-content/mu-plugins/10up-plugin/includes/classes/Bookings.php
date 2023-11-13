@@ -29,6 +29,21 @@ class Bookings extends \TenUpPlugin\Module {
 	}
 
 	/**
+	 * Registers the `rating` post meta for the `booking` post type, used to store the rating for a booking.
+	 */
+	public function register_rating_meta() {
+		register_post_meta(
+			'booking',
+			'rating',
+			array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'integer',
+			)
+		);
+	}
+
+	/**
 	 * This is the callback that registers the 'booking' CPT.
 	 */
 	public function register_post_type() {

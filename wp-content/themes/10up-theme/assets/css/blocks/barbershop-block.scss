@@ -1,0 +1,77 @@
+.barbershop-block {
+
+	&__metadata {
+		margin-bottom: 2em;		
+	}
+
+	&__step {
+		display: none;
+		margin-bottom: 4em;
+
+		&.active {
+			display: block;
+		}
+
+		&-items {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1em;
+		
+			& label input {
+				appearance: none;
+				display: none;
+
+				&:disabled ~ span {
+					cursor: not-allowed;
+					opacity: 0.3;
+				}
+
+				&:checked ~ span {
+					background: #fff;
+					border: 1px solid #000;
+				}
+			}
+
+			& label span {
+				background: #fff;
+				border: 1px solid transparent;
+				border-radius: 6px;
+				cursor: pointer;
+				display: inline-block;
+				padding: 1em;
+				text-align: center;
+
+				&:hover {
+					background: #fff;
+					border: 1px solid var(--c-gray);
+				}
+			}
+		}
+
+		&--calendar {
+
+			@for $i from 1 through 7 {
+				[data-startday="#{$i}"] label:first-child {
+					grid-column-start: #{$i};
+				}
+			}
+
+			& .barbershop-block__step-items {
+				display: grid;
+				gap: 6px;
+				grid-template-columns: repeat(7, 1fr);
+
+				& span {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	&__calendar--hint {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		margin: 1em 0;
+		text-align: center;
+	}
+}
