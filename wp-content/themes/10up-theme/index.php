@@ -13,6 +13,5 @@ get_header(); ?>
 			<?php the_content(); ?>
 		<?php endwhile; ?>
 	<?php endif; ?>
-
 <?php
 get_footer();

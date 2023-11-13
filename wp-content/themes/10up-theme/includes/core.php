@@ -103,6 +103,7 @@ function theme_setup() {
 	register_nav_menus(
 		array(
 			'primary' => esc_html__( 'Primary Menu', 'tenup-theme' ),
+			'secondary' => esc_html__( 'Secondary Menu', 'tenup-theme' ),
 		)
 	);
 }

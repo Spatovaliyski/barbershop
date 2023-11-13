@@ -1,0 +1,72 @@
+.site-header {
+	display: block;
+
+	&__inner {
+		align-items: center;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1em;
+		justify-content: space-between;
+		margin: 0 auto;
+		max-width: var(--container-max-width);
+		padding-left: var(--container-padding-left);
+		padding-right: var(--container-padding-right);
+	}
+
+	& .menu-item {
+		font-weight: 600;
+	}
+
+	& .main-navigation {
+		display: flex;
+		align-items: center;
+		justify-self: center;
+	}
+
+	& .menu {
+		display: flex;
+		gap: 1.5em;
+		list-style-type: none;
+		padding: 0;
+
+		&-toggle {
+			display: none;
+		}
+
+		& a {
+			color: var(--c-gray-dark);
+			text-decoration: none;
+			transition: color 0.2s ease-in-out;
+			padding: .5em;
+			display: inline-block;
+
+			&:hover {
+				color: var(--c-real-dark);
+			}
+		}
+	}
+
+	& .navigation-appointments {
+		justify-self: flex-end;
+
+		.menu-item a {
+			@extend .button__primary; // Use the primary button styles from _buttons.scss. No wacky styling needed for different non-button cases
+		}
+	}
+}
+
+.site-branding {
+	& a {
+		text-decoration: none;
+		color: var(--c-gray-dark);
+
+		&:hover {
+			color: var(--c-real-dark);
+		}
+	}
+}
+
+.site-title {
+	font-size: 1.25em;
+	font-weight: 900;
+}

@@ -1,0 +1,38 @@
+%barbershop-services-item {
+	align-items: center;
+	border-radius: var(--border-radius);
+	display: flex;
+	flex-basis: calc(100% / 4 - 2em);
+	flex-flow: column wrap;
+	justify-content: flex-start;
+	padding: 1.5em;
+	text-align: center;
+}
+
+.barbershop-services {
+	align-items: center;
+	display: flex;
+	flex-flow: row wrap;
+	flex-wrap: wrap;
+	gap: 2em;
+	justify-content: flex-start;
+	padding: 1.5em;
+
+	&__icon {
+		height: auto;
+		max-width: 4em;
+	}
+
+	&__item {
+
+		@extend %barbershop-services-item;
+
+		&--featured {
+
+			@extend %barbershop-services-item;
+
+			background: #f6f2ed;
+			box-shadow: 0 0 26px #dcdad6;
+		}
+	}
+}

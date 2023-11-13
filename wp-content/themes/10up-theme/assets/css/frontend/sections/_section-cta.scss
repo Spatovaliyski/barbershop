@@ -1,0 +1,16 @@
+.section {
+
+	// We want the content to be centered for our CTA section so that's what's mostly neeeded here. Other styling comes from reusing components 
+	&-cta {
+		text-align: center;
+
+		.section__content {
+			text-align: center;
+			margin: 4em 0;
+		}
+	
+		.button {
+			display: inline-block;
+		}
+	}
+}

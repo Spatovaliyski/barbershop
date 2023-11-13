@@ -1,0 +1,25 @@
+$logos-per-row: calc(100% / 4 - 1em);
+
+.partner-logos {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: 100%;
+	padding: 0 1em;
+	width: 100%;
+
+	// We'll create 2 empty elements to fill the row if not enough are present.
+	&::before,
+	&::after {
+		content: "";
+		flex-basis: $logos-per-row;
+		order: 9999;
+	}
+
+	&__logo {
+		flex-basis: $logos-per-row;
+		margin-bottom: 2em;
+		text-align: center;
+	}
+}

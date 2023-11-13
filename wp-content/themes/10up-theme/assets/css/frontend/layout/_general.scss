@@ -1,0 +1,16 @@
+.container {
+	margin: 0 auto;
+	max-width: var(--container-max-width);
+	padding-left: var(--container-offset-left);
+	padding-right: var(--container-offset-right);
+
+	@include md {
+		padding-left: var(--container-padding-left / 2);
+		padding-right: var(--container-padding-right / 2);
+	}
+}
+
+img {
+	height: auto;
+	max-width: 100%;
+}

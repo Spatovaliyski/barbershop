@@ -1,0 +1,24 @@
+/*
+ * Colors
+ * Use theme.json to establish colors
+ * https://developer.wordpress.org/block-editor/developers/themes/theme-json/
+ * This file can be used to establish color overrides
+ * or exceptions to the theme.json use case
+ */
+
+:root {
+	// Site Colours
+	--c-primary: #f0f0f0;
+	--c-primary-text: #1d150d;
+	--c-accent: #f1f314;
+	--c-white: #fff;
+	--c-real-dark: #000;
+	--c-gray: #ccc;
+	--c-gray-dark: #333;
+	--c-cream: #f4eee7;
+	--c-cream-darker: hsl(from var(--c-cream) h s calc(l - 5%)); 
+
+	// Buttons
+	--c-button-primary: #b15838;
+	--c-button-primary-text: #fff;
+}

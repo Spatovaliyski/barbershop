@@ -1,0 +1,24 @@
+/*
+ * Ensure that we are not overriding the editor styles of the
+ * WordPress Components.
+ *
+ * This is a workaround for: https://github.com/WordPress/gutenberg/issues/10178
+ *
+ * using :where to prevent the specificity increase of using :not
+ */
+.button {
+	display: inline-block;
+	text-decoration: none;
+
+	&__primary {
+		background-color: var(--c-button-primary);
+		border-radius: var(--border-radius);
+		color: var(--c-button-primary-text);
+		padding: 1em 1.5em;
+
+		&:hover {
+			background-color: var(--c-button-primary);
+			color: var(--c-button-primary-text);
+		}
+	}
+}

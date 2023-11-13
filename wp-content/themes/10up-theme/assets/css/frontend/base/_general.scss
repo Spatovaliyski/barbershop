@@ -1,0 +1,13 @@
+body {
+	background-color: var(--c-cream);
+	color: var(--c-primary-text);
+	font-family: var(--font-serif);
+}
+
+p {
+	line-height: 1.5;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}

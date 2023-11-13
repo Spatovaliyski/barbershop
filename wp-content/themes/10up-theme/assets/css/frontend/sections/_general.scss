@@ -1,0 +1,45 @@
+.section {
+	padding: 4em 0;
+	width: 100%;
+
+	&__container {
+		margin: 0 auto;
+		max-width: var(--container-max-width);
+		padding-left: var(--container-padding-left);
+		padding-right: var(--container-padding-right);
+
+		@include md {
+			padding-left: var(--container-padding-left / 2);
+			padding-right: var(--container-padding-right / 2);
+		}
+	}
+}
+
+.section-heading {
+	margin-bottom: 4em;
+
+	&__title {
+		margin-bottom: 1em;
+		margin-top: 0.5em;
+	}
+
+	&--centered {
+		text-align: center;
+	}
+
+	& .heading-bold {
+		font-weight: 700;
+	}
+
+	& .heading-thin {
+		font-weight: 300;
+	}
+
+	& .heading-small {
+		font-size: 1em;
+	}
+
+	& .heading-uppercase {
+		text-transform: uppercase;
+	}
+}

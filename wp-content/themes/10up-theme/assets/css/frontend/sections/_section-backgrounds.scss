@@ -1,0 +1,19 @@
+.section {
+
+	&__background {
+
+		&--grayed {
+			background-color: #f5f5f5;
+		}
+
+		&--gradient-left {
+			background: var(--c-white);
+			background: linear-gradient(90deg, var(--c-white) 0%, var(--c-cream) 100%);
+		}
+
+		&--gradient-right {
+			background: var(--c-white);
+			background: linear-gradient(-90deg, var(--c-white) 0%, var(--c-cream) 100%);
+		}
+	}
+}

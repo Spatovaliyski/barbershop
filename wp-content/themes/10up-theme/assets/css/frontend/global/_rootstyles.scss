@@ -1,0 +1,10 @@
+:root {
+	--font-serif: "Be Vietnam Pro", serif, "Apple Garamond", georgia, serif;
+	--body-size: 16px;
+	--container-max-width: 1200px;
+	--container-padding-left: 1em;
+	--container-padding-right: 1em;
+
+	/* Not in ems here, we need a more static size */
+	--border-radius: 8px;
+}
