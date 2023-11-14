@@ -2,7 +2,7 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, PanelRow, PanelHeader, TextControl, Button, ButtonGroup } from '@wordpress/components';
+import { PanelBody, PanelRow, TextControl, Button, ButtonGroup } from '@wordpress/components';
 
 /**
  * Edit component.
@@ -42,15 +42,27 @@ const BarbershopEdit = (props) => {
 	const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 	const dayOfWeek = firstDayOfMonth.getDay(); // 0 is Sunday, 1 is Monday, etc.
 
+	/**
+	 * Create an array of hours from 9:00 to 18:00.
+	 *
+	 * @type {string[]}
+	 *
+	 * @returns {string}
+	 */
 	const hours = Array.from({ length: 10 }, (_, i) => {
 		const hour = 9 + i;
 		return `${hour}:00`;
 	});
 
+	/**
+	 * Handle input changes (Checkboxes in this context)
+	 *
+	 * @param {object} event The event object.
+	 *
+	 * @returns {void}
+	 */
 	const handleInputChange = (event) => {
 		const { name, value, checked } = event.target;
-
-		console.log(name, value, checked)
 
 		if (name.startsWith('service-')) {
 			const serviceName = name.replace('service-', '');
@@ -73,22 +85,50 @@ const BarbershopEdit = (props) => {
 		}
 	};
 
+	/**
+	 * Calculate the total cost of the booking. This is meant for visual use only, we don't store the price
+	 *
+	 * @type {number}
+	 *
+	 * @returns {string}
+	 */
 	const totalCost = booking.services.reduce((total, service) => {
 		const selectedService = attributes.services.find((s) => s.name === service);
 		return total + Number(selectedService.price);
 	}, 0);
 
+	/**
+	 * Update the name or price of a service.
+	 *
+	 * @param {number} index The index of the service to update.
+	 * @param {string} field The field to update.
+	 * @param {string} value The new value.
+	 *
+	 * @returns {void}
+	 */
 	const handleServiceChange = (index, field, value) => {
 		const newServices = [...attributes.services];
 		newServices[index][field] = value;
 		setAttributes({ services: newServices });
 	};
 
+	/**
+	 * Add a new service to the list of services.
+	 *
+	 * @returns {void}
+	 */
 	const handleAddService = () => {
 		const newServices = [...attributes.services, { name: '', price: '' }];
 		setAttributes({ services: newServices });
 	};
 
+	/**
+	 * Remove a service from the list of services.
+	 *
+	 * @param {number} index The index of the service to remove.
+	 *
+	 * @returns {void}
+	 */
 	const handleRemoveService = (index) => {
 		const newServices = [...attributes.services];
 		newServices.splice(index, 1);
@@ -102,7 +142,7 @@ const BarbershopEdit = (props) => {
 				<h4 className="barbershop-block__step-title">{__('Choose the type of service')}</h4>
 				<div className="barbershop-block__step-items">
 					{attributes.services.map((service) => (
-						<label key={service.name}>
+						<label htmlFor={`service-${service.name}`} key={service.name}>
 							<input
 								type="checkbox"
 								name={`service-${service.name}`}
@@ -117,6 +157,9 @@ const BarbershopEdit = (props) => {
 					))}
 				</div>
 			</div>
+			{/*
+			 * Conditionally render the Calendar step only if the user has selected at least one service.
+			 */}
 			{booking.services.length > 0 && (
 				<div className="barbershop-block__step barbershop-block__step--calendar active">
 					<h4 className="barbershop-block__step-title">{__('Choose a day')}</h4>
@@ -131,10 +174,10 @@ const BarbershopEdit = (props) => {
 					</div>
 					<div className="barbershop-block__step-items" data-startday={dayOfWeek}>
 						{days.map(({ date, isPastDate }) => (
-							<label key={date}>
+							<label htmlFor={date} key={date}>
 								<input
 									type="radio"
-									name="day"
+									name={date}
 									value={date.toLocaleDateString()}
 									checked={
 										booking.day &&
@@ -152,15 +195,18 @@ const BarbershopEdit = (props) => {
 					</div>
 				</div>
 			)}
+			{/*
+			 * Conditionally render the Hour step only if the user has selected a day.
+			 */}
 			{booking.day && (
 				<div className="barbershop-block__step barbershop-block__step--hour active">
 					<h4 className="barbershop-block__step-title">{__('Choose a timeslot')}</h4>
 					<div className="barbershop-block__step-items">
 						{hours.map((hour) => (
-							<label key={hour}>
+							<label htmlFor={hour} key={hour}>
 								<input
 									type="radio"
-									name="hour"
+									name={hour}
 									value={hour}
 									checked={booking.hour === hour}
 									onChange={handleInputChange}
@@ -171,12 +217,17 @@ const BarbershopEdit = (props) => {
 					</div>
 				</div>
 			)}
+			{/*
+			 * Conditionally render the Name step only if the user has selected a timeslot.
+			 */}
 			{booking.hour && (
 				<div className="barbershop-block__step barbershop-block__step--name active">
-					<h4 className="barbershop-block__step-title">{__('And finally, Your name and surname')}</h4>
+					<h4 className="barbershop-block__step-title">
+						{__('And finally, Your name and surname')}
+					</h4>
 					<div className="barbershop-block__step-items">
 						<TextControl
-							className={"barbershop-block__textinput"}
+							className="barbershop-block__textinput"
 							label={__('Name and Surname')}
 							value={booking.name}
 							onChange={(value) => setBooking({ ...booking, name: value })}
@@ -184,13 +235,15 @@ const BarbershopEdit = (props) => {
 					</div>
 				</div>
 			)}
+			{/*
+			 * Conditionally render the Final step only if the user has selected a timeslot (Combined with Name step!)
+			 */}
 			{booking.hour && (
 				<div className="barbershop-block__step barbershop-block__step--final active">
 					<div className="barbershop-block__metadata">
 						<span>{__('Total cost: €')}</span>
 						<span>{totalCost}</span>
-					</div>-
-					
+					</div>
 					<form>
 						<input type="hidden" name="name" value={booking.name} readOnly />
 						{booking.services.map((service) => (
@@ -205,10 +258,13 @@ const BarbershopEdit = (props) => {
 				</div>
 			)}
 
+			{/*
+			 * Inspector Controls
+			 */}
 			<InspectorControls>
 				<PanelBody title={__('Services')}>
 					{attributes.services.map((service, index) => (
-						<div className="barbershop-block__panelrow" key={index}>
+						<div className="barbershop-block__panelrow" key={service.name}>
 							<PanelRow>
 								<TextControl
 									label={__('Service Name')}
@@ -221,16 +277,14 @@ const BarbershopEdit = (props) => {
 									onChange={(value) => handleServiceChange(index, 'price', value)}
 								/>
 							</PanelRow>
-								<ButtonGroup>
-									<Button onClick={() => handleRemoveService(index)}>
-										{__('Remove')}
-									</Button>
-								</ButtonGroup>
+							<ButtonGroup>
+								<Button onClick={() => handleRemoveService(index)}>
+									{__('Remove')}
+								</Button>
+							</ButtonGroup>
 						</div>
 					))}
-					<Button onClick={handleAddService}>
-						{__('Add Service')}
-					</Button>
+					<Button onClick={handleAddService}>{__('Add Service')}</Button>
 				</PanelBody>
 			</InspectorControls>
 		</div>

@@ -2,10 +2,17 @@
 /**
  * The markup for the Barbershop Booking block.
  *
- * @package 10up-theme
+ * @package TenUpTheme\Blocks\Barbershop
+ *
+ * @var array $attributes The block attributes.
+ * @var array $services   The services.
  */
+?>
 
-// Get the block attributes.
+<?php
+/**
+ * Get the block wrapper attributes.
+ */
 $attributes = $attributes ?? [];
 $services   = $attributes['services'] ?? [];
 
@@ -14,10 +21,11 @@ $services   = $attributes['services'] ?? [];
  *
  * @return int The number of days in the current month.
  */
-
-function get_days_in_month() {
-	$current_date = new DateTime();
-	return (int) $current_date->format( 't' );
+if ( ! function_exists( 'get_days_in_month' ) ) {
+	function get_days_in_month() {
+		$current_date = new DateTime();
+		return (int) $current_date->format( 't' );
+	}
 }
 
 /**
@@ -25,19 +33,21 @@ function get_days_in_month() {
  *
  * @return array An array of days in the current month with date and is_past_day.
  */
-function get_days() {
-	$current_date = new DateTime();
-	$days_in_month = get_days_in_month();
-	$days = [];
-	for ( $i = 1; $i <= $days_in_month; $i++ ) {
-		$date        = new DateTime( "{$current_date->format( 'Y-m' )}-{$i}" );
-		$is_past_day = $date < new DateTime();
-		$days[]      = [
-			'date'        => $date,
-			'is_past_day' => $is_past_day,
-		];
+if ( ! function_exists( 'get_days' ) ) {
+	function get_days() {
+		$current_date = new DateTime();
+		$days_in_month = get_days_in_month();
+		$days = [];
+		for ( $i = 1; $i <= $days_in_month; $i++ ) {
+			$date        = new DateTime( "{$current_date->format( 'Y-m' )}-{$i}" );
+			$is_past_day = $date < new DateTime();
+			$days[]      = [
+				'date'        => $date,
+				'is_past_day' => $is_past_day,
+			];
+		}
+		return $days;
 	}
-	return $days;
 }
 
 /**
@@ -45,9 +55,11 @@ function get_days() {
  *
  * @return DateTime The first day of the current month.
  */
-function get_first_day_of_month() {
-	$current_date = new DateTime();
-	return new DateTime( "{$current_date->format( 'Y-m' )}-01" );
+if ( ! function_exists( 'get_first_day_of_month' ) ) {
+	function get_first_day_of_month() {
+		$current_date = new DateTime();
+		return new DateTime( "{$current_date->format( 'Y-m' )}-01" );
+	}
 }
 
 /**
@@ -55,9 +67,11 @@ function get_first_day_of_month() {
  *
  * @return int The day of the week for the first day of the current month.
  */
-function get_day_of_week() {
-	$first_day_of_month = get_first_day_of_month();
-	return (int) $first_day_of_month->format( 'w' );
+if ( ! function_exists( 'get_day_of_week' ) ) {
+	function get_day_of_week() {
+		$first_day_of_month = get_first_day_of_month();
+		return (int) $first_day_of_month->format( 'w' );
+	}
 }
 
 /**
@@ -66,12 +80,14 @@ function get_day_of_week() {
  * @return array An array of hours.
  */
 
-function get_hours() {
-	$hours = [];
-	for ( $i = 9; $i <= 18; $i++ ) {
-		$hours[] = sprintf( '%02d:00', $i % 24 );
+if ( ! function_exists( 'get_hours' ) ) {
+	function get_hours() {
+		$hours = [];
+		for ( $i = 9; $i <= 18; $i++ ) {
+			$hours[] = sprintf( '%02d:00', $i % 24 );
+		}
+		return $hours;
 	}
-	return $hours;
 }
 
 /**
@@ -80,12 +96,15 @@ function get_hours() {
  * @return array An array of booking data with services, day, and hour.
  */
 
-function get_booking() {
-	return [
-		'services' => $services ?? [],
-		'day'      => '',
-		'hour'     => '',
-	];
+if ( ! function_exists( 'get_booking' ) ) {
+	function get_booking() {
+		global $services;
+		return [
+			'services' => $services ?? [],
+			'day'      => '',
+			'hour'     => '',
+		];
+	}
 }
 
 /**
@@ -94,24 +113,40 @@ function get_booking() {
  * @param array $booking An array of booking data with services, day, and hour.
  * @return int The total cost of the booking.
  */
-function get_total_cost($booking) {
-	$total_cost = 0;
-	foreach ( $booking['services'] as $service ) {
-		foreach ( $services as $s ) {
-			if ( $s['name'] === $service ) {
-				$total_cost += $s['price'];
-				break;
+if ( ! function_exists( 'get_total_cost' ) ) {
+	function get_total_cost($booking) {
+		global $services;
+		$total_cost = 0;
+		foreach ( $booking['services'] as $service ) {
+			foreach ( $services as $s ) {
+				if ( $s['name'] === $service ) {
+					$total_cost += $s['price'];
+					break;
+				}
 			}
 		}
+		return $total_cost;
 	}
-	return $total_cost;
 }
 ?>
 
+<?php
+/**
+ * Chunk the implementation in steps. Each step is written as a modifier in the end
+ */
+?>
 <div <?php echo get_block_wrapper_attributes(); // phpcs:ignore ?> class="barbershop-block">
-	<h2>Barbershop Booking</h2>
+	<h2><?php esc_html_e( 'Barbershop Booking', '10up-theme' ); ?></h2>
+
+	<?php 
+	/**
+	 * Step: Services. This is linked to the Block editor's inspector controls, printing out all available ones
+	 * 
+	 * @uses $services, get_booking()
+	 */
+	?>
 	<div class="barbershop-block__step barbershop-block__step--service active">
-		<h4 class="barbershop-block__step-title">Choose the type of service</h4>
+		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose the type of service', '10up-theme' ); ?></h4>
 		<div class="barbershop-block__step-items">
 			<?php foreach ( $services as $service ) : ?>
 				<label>
@@ -121,16 +156,24 @@ function get_total_cost($booking) {
 			<?php endforeach; ?>
 		</div>
 	</div>
+
+	<?php 
+	/**
+	 * Step: Calendar. We're running with the current month and disabling past days 
+	 * 
+	 * @uses get_days(), get_day_of_week(), get_booking(), 
+	 */
+	?>
 	<div class="barbershop-block__step barbershop-block__step--calendar">
-		<h4 class="barbershop-block__step-title">Choose a day</h4>
+		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose a day', '10up-theme' ); ?></h4>
 		<div class="barbershop-block__calendar--hint">
-			<p>Monday</p>
-			<p>Tuesday</p>
-			<p>Wednesday</p>
-			<p>Thursday</p>
-			<p>Friday</p>
-			<p>Saturday</p>
-			<p>Sunday</p>
+			<p><?php esc_html_e( 'Monday', '10up-theme' ); ?></p>
+			<p><?php esc_html_e( 'Tuesday', '10up-theme' ); ?></p>
+			<p><?php esc_html_e( 'Wednesday', '10up-theme' ); ?></p>
+			<p><?php esc_html_e( 'Thursday', '10up-theme' ); ?></p>
+			<p><?php esc_html_e( 'Friday', '10up-theme' ); ?></p>
+			<p><?php esc_html_e( 'Saturday', '10up-theme' ); ?></p>
+			<p><?php esc_html_e( 'Sunday', '10up-theme' ); ?></p>
 		</div>
 		<div class="barbershop-block__step-items" data-startday="<?php echo esc_attr( get_day_of_week() ); ?>">
 			<?php foreach ( get_days() as $day ) : ?>
@@ -141,8 +184,16 @@ function get_total_cost($booking) {
 			<?php endforeach; ?>
 		</div>
 	</div>
+
+	<?php 
+	/**
+	 * Step: Hour picker. Picks an available hour from the provided list. Currently hardcoded amount of hours
+	 * 
+	 * @uses get_hours(), get_booking()
+	 */
+	?>
 	<div class="barbershop-block__step barbershop-block__step--hour">
-		<h4 class="barbershop-block__step-title">Choose a timeslot</h4>
+		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose a timeslot', '10up-theme' ); ?></h4>
 		<div class="barbershop-block__step-items">
 			<?php foreach ( get_hours() as $hour ) : ?>
 				<label>
@@ -152,18 +203,32 @@ function get_total_cost($booking) {
 			<?php endforeach; ?>
 		</div>
 	</div>
+
+	<?php 
+	/**
+	 * Step: Name. Linked with the final step. We use this input to generate the Custom Post Type's title
+	 */
+	?>
 	<div class="barbershop-block__step barbershop-block__step--name">
-		<h4 class="barbershop-block__step-title">And finally, Your name and surname</h4>
+		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'And finally, Your name and surname', '10up-theme' ); ?></h4>
 		<div class="barbershop-block__step-items">
 			<div class="barbershop-block__textinput">
-				<label for="person_name">Name and Surname</label>
-				<input type="text" name="person_name">
+				<label for="person_name"><?php esc_html_e( 'Name and Surname', '10up-theme' ); ?></label>
+				<input type="text" name="person_name" required>
 			</div>
 		</div>
 	</div>
+
+	<?php 
+	/**
+	 * Step: Final. Let's build and push the data through the API
+	 * 
+	 * @uses get_booking(), get_total_cost()
+	 */
+	?>
 	<div class="barbershop-block__step barbershop-block__step--final">
 		<div class="barbershop-block__metadata">
-			<span>Total cost: €</span>
+			<span><?php esc_html_e( 'Total cost:', '10up-theme' ); ?> €</span>
 			<span id="total-cost"><?php echo esc_html( get_total_cost(get_booking()) ); ?></span>
 		</div>
 
@@ -173,7 +238,7 @@ function get_total_cost($booking) {
 			<?php endforeach; ?>
 			<input type="hidden" name="day" value="<?php echo esc_attr( get_booking()['day'] ); ?>">
 			<input type="hidden" name="hour" value="<?php echo esc_attr( get_booking()['hour'] ); ?>">
-			<button class="button button__primary" type="submit">Book Now</button>
+			<button id="create_booking" class="button button__primary" type="submit"><?php esc_html_e( 'Book Now', '10up-theme' ); ?></button>
 		</form>
 	</div>
 </div>

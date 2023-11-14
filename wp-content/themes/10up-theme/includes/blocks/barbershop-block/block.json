@@ -35,7 +35,24 @@
   },
   "example": {
     "attributes":{
-      "title": "Barbershop Block"
+      "title": "Barbershop Block",
+      "services": [
+        {
+          "id": 1,
+          "name": "Haircut",
+          "price": 20
+        },
+        {
+          "id": 2,
+          "name": "Beard Trim",
+          "price": 10
+        },
+        {
+          "id": 3,
+          "name": "Shave",
+          "price": 15
+        }
+      ]
     }
   },
   "supports": {
