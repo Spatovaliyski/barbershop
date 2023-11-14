@@ -108,10 +108,10 @@ function get_total_cost($booking) {
 }
 ?>
 
-<div class="barbershop-block">
+<div <?php echo get_block_wrapper_attributes(); // phpcs:ignore ?> class="barbershop-block">
 	<h2>Barbershop Booking</h2>
 	<div class="barbershop-block__step barbershop-block__step--service active">
-		<h4>Choose the type of service</h4>
+		<h4 class="barbershop-block__step-title">Choose the type of service</h4>
 		<div class="barbershop-block__step-items">
 			<?php foreach ( $services as $service ) : ?>
 				<label>
@@ -122,7 +122,7 @@ function get_total_cost($booking) {
 		</div>
 	</div>
 	<div class="barbershop-block__step barbershop-block__step--calendar">
-		<h4>Choose a day</h4>
+		<h4 class="barbershop-block__step-title">Choose a day</h4>
 		<div class="barbershop-block__calendar--hint">
 			<p>Monday</p>
 			<p>Tuesday</p>
@@ -142,7 +142,7 @@ function get_total_cost($booking) {
 		</div>
 	</div>
 	<div class="barbershop-block__step barbershop-block__step--hour">
-		<h4>Choose a timeslot</h4>
+		<h4 class="barbershop-block__step-title">Choose a timeslot</h4>
 		<div class="barbershop-block__step-items">
 			<?php foreach ( get_hours() as $hour ) : ?>
 				<label>
@@ -150,6 +150,15 @@ function get_total_cost($booking) {
 					<span><?php echo esc_html( $hour ); ?></span>
 				</label>
 			<?php endforeach; ?>
+		</div>
+	</div>
+	<div class="barbershop-block__step barbershop-block__step--name">
+		<h4 class="barbershop-block__step-title">And finally, Your name and surname</h4>
+		<div class="barbershop-block__step-items">
+			<div class="barbershop-block__textinput">
+				<label for="person_name">Name and Surname</label>
+				<input type="text" name="person_name">
+			</div>
 		</div>
 	</div>
 	<div class="barbershop-block__step barbershop-block__step--final">

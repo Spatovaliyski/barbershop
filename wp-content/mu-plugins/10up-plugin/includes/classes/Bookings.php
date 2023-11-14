@@ -26,6 +26,9 @@ class Bookings extends \TenUpPlugin\Module {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		add_action( 'init', [ $this, 'register_editor_template' ] );
 		add_action( 'init', [ $this, 'register_rating_meta' ] );
+		add_action( 'rest_api_init', [ $this, 'register_rest_route' ] );
+		add_action( 'add_meta_boxes', [ $this, 'add_booking_datetime_metabox' ] );
+		add_action( 'save_post_booking', [ $this, 'save_booking_datetime' ] );
 	}
 
 	/**
@@ -156,5 +159,46 @@ class Bookings extends \TenUpPlugin\Module {
 			// Update the booking datetime post meta.
 			update_post_meta( $post_id, 'booking_datetime', $booking_datetime );
 		}
+	}
+
+	/**
+	 * Register a custom endpoint for the booking CPT in the REST API.
+	 */
+	public function register_rest_route() {
+		register_rest_route(
+			'tenup-plugin/v1',
+			'/bookings/',
+			array(
+				'methods'          => 'POST',
+				'callback'         => [ $this, 'create_booking' ],
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+
+	/**
+	 * Create a new booking using the REST API.
+	 *
+	 * @param WP_REST_Request $request The REST API request object.
+	 */
+	public function create_booking( $request ) {
+		// Get the booking data from the request.
+		$booking_data = $request->get_params();
+
+		// Create the booking post.
+		$booking_id = wp_insert_post(
+			array(
+				'post_type'    => 'booking',
+				'post_title'   => $booking_data['title'],
+				'post_content' => $booking_data['content'],
+				'post_status'  => 'publish',
+			)
+		);
+
+		// Update the booking post meta.
+		update_post_meta( $booking_id, 'booking_datetime', $booking_data['booking_datetime'] );
+
+		// Return the booking ID.
+		return $booking_id;
 	}
 }

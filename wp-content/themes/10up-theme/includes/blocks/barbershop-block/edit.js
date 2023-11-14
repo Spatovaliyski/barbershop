@@ -1,6 +1,8 @@
 // WordPress dependencies
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { PanelBody, PanelRow, PanelHeader, TextControl, Button, ButtonGroup } from '@wordpress/components';
 
 /**
  * Edit component.
@@ -15,14 +17,14 @@ import { useState } from '@wordpress/element';
  */
 
 const BarbershopEdit = (props) => {
-	const { attributes } = props;
+	const { attributes, setAttributes } = props;
+	const blockProps = useBlockProps();
 	const [booking, setBooking] = useState({
 		services: [],
 		day: '',
 		hour: '',
+		name: '',
 	});
-
-	console.log(booking);
 
 	const currentDate = new Date();
 	const daysInMonth = new Date(
@@ -73,14 +75,31 @@ const BarbershopEdit = (props) => {
 
 	const totalCost = booking.services.reduce((total, service) => {
 		const selectedService = attributes.services.find((s) => s.name === service);
-		return total + selectedService.price;
+		return total + Number(selectedService.price);
 	}, 0);
 
+	const handleServiceChange = (index, field, value) => {
+		const newServices = [...attributes.services];
+		newServices[index][field] = value;
+		setAttributes({ services: newServices });
+	};
+
+	const handleAddService = () => {
+		const newServices = [...attributes.services, { name: '', price: '' }];
+		setAttributes({ services: newServices });
+	};
+
+	const handleRemoveService = (index) => {
+		const newServices = [...attributes.services];
+		newServices.splice(index, 1);
+		setAttributes({ services: newServices });
+	};
+
 	return (
-		<div {...props}>
+		<div {...blockProps}>
 			<h2>{__('Barbershop Booking')}</h2>
 			<div className="barbershop-block__step barbershop-block__step--service active">
-				<h4>{__('Choose the type of service')}</h4>
+				<h4 className="barbershop-block__step-title">{__('Choose the type of service')}</h4>
 				<div className="barbershop-block__step-items">
 					{attributes.services.map((service) => (
 						<label key={service.name}>
@@ -100,7 +119,7 @@ const BarbershopEdit = (props) => {
 			</div>
 			{booking.services.length > 0 && (
 				<div className="barbershop-block__step barbershop-block__step--calendar active">
-					<h4>{__('Choose a day')}</h4>
+					<h4 className="barbershop-block__step-title">{__('Choose a day')}</h4>
 					<div className="barbershop-block__calendar--hint">
 						<p>Monday</p>
 						<p>Tuesday</p>
@@ -135,7 +154,7 @@ const BarbershopEdit = (props) => {
 			)}
 			{booking.day && (
 				<div className="barbershop-block__step barbershop-block__step--hour active">
-					<h4>{__('Choose a timeslot')}</h4>
+					<h4 className="barbershop-block__step-title">{__('Choose a timeslot')}</h4>
 					<div className="barbershop-block__step-items">
 						{hours.map((hour) => (
 							<label key={hour}>
@@ -153,13 +172,27 @@ const BarbershopEdit = (props) => {
 				</div>
 			)}
 			{booking.hour && (
+				<div className="barbershop-block__step barbershop-block__step--name active">
+					<h4 className="barbershop-block__step-title">{__('And finally, Your name and surname')}</h4>
+					<div className="barbershop-block__step-items">
+						<TextControl
+							className={"barbershop-block__textinput"}
+							label={__('Name and Surname')}
+							value={booking.name}
+							onChange={(value) => setBooking({ ...booking, name: value })}
+						/>
+					</div>
+				</div>
+			)}
+			{booking.hour && (
 				<div className="barbershop-block__step barbershop-block__step--final active">
 					<div className="barbershop-block__metadata">
-						<span>{__('Total cost: $')}</span>
+						<span>{__('Total cost: €')}</span>
 						<span>{totalCost}</span>
-					</div>
+					</div>-
 					
 					<form>
+						<input type="hidden" name="name" value={booking.name} readOnly />
 						{booking.services.map((service) => (
 							<input key={service} type="hidden" name="services[]" value={service} />
 						))}
@@ -171,6 +204,35 @@ const BarbershopEdit = (props) => {
 					</form>
 				</div>
 			)}
+
+			<InspectorControls>
+				<PanelBody title={__('Services')}>
+					{attributes.services.map((service, index) => (
+						<div className="barbershop-block__panelrow" key={index}>
+							<PanelRow>
+								<TextControl
+									label={__('Service Name')}
+									value={service.name}
+									onChange={(value) => handleServiceChange(index, 'name', value)}
+								/>
+								<TextControl
+									label={__('Price')}
+									value={service.price}
+									onChange={(value) => handleServiceChange(index, 'price', value)}
+								/>
+							</PanelRow>
+								<ButtonGroup>
+									<Button onClick={() => handleRemoveService(index)}>
+										{__('Remove')}
+									</Button>
+								</ButtonGroup>
+						</div>
+					))}
+					<Button onClick={handleAddService}>
+						{__('Add Service')}
+					</Button>
+				</PanelBody>
+			</InspectorControls>
 		</div>
 	);
 };

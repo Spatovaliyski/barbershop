@@ -1,9 +1,5 @@
 .barbershop-block {
 
-	&__metadata {
-		margin-bottom: 2em;		
-	}
-
 	&__step {
 		display: none;
 		margin-bottom: 4em;
@@ -73,5 +69,27 @@
 		grid-template-columns: repeat(7, 1fr);
 		margin: 1em 0;
 		text-align: center;
+	}
+
+	&__textinput {
+		label {
+			display: block;
+			margin-bottom: .5em;
+		}
+
+		input {
+			display: block;
+			padding: 1em;
+			border-radius: var(--border-radius);
+			border: 1px solid;
+		}
+	} 
+	
+	&__metadata {
+		margin-bottom: 2em;		
+	}
+
+	&__step-title {
+		margin-bottom: 1em;
 	}
 }
