@@ -27,7 +27,7 @@ extract( $args );
 				<?php endif; ?>
 
 				<h4 class="section-heading__subtitle"><?php esc_html_e( 'Elevate your look with precision styling at our neighborhood barbershop', '10up-theme' ); ?></h4>
-				<a href="#" class="button button__primary"><?php esc_html_e( 'See more', '10up-theme' ); ?></a>
+				<a href="#services" class="button button__primary"><?php esc_html_e( 'See more', '10up-theme' ); ?></a>
 			</div>
 			
 			<figure class="section-figure">

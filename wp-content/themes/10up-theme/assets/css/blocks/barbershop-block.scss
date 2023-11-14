@@ -60,6 +60,10 @@
 				& span {
 					width: 100%;
 				}
+
+				@include md {
+					gap: 0;
+				}
 			}
 		}
 	}
@@ -72,21 +76,22 @@
 	}
 
 	&__textinput {
-		label {
+		
+		& label {
 			display: block;
-			margin-bottom: .5em;
+			margin-bottom: 0.5em;
 		}
 
-		input {
+		& input {
+			border: 1px solid;
+			border-radius: var(--border-radius);
 			display: block;
 			padding: 1em;
-			border-radius: var(--border-radius);
-			border: 1px solid;
 		}
-	} 
+	}
 	
 	&__metadata {
-		margin-bottom: 2em;		
+		margin-bottom: 2em;
 	}
 
 	&__step-title {

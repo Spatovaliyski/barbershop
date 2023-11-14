@@ -9,6 +9,7 @@
 .button {
 	display: inline-block;
 	text-decoration: none;
+	transition: 0.2s ease all;
 
 	&__primary {
 		background-color: var(--c-button-primary);
@@ -17,7 +18,7 @@
 		padding: 1em 1.5em;
 
 		&:hover {
-			background-color: var(--c-button-primary);
+			background-color: var(--c-button-primary-hover);
 			color: var(--c-button-primary-text);
 		}
 	}

@@ -1,10 +1,9 @@
-
 /*
 * Media Queries	
 * --------------------------------------------------
 * Alternate version of the variable-style breakpoint declarations.
-* This is a more verbose version prioritising desktop following down to mobile with fallbacks.
-
+* This is a more verbose version prioritising desktop
+*
 * Usage:
 * @include sm { ... }
 * @include md { ... }
@@ -13,32 +12,36 @@
 */
 
 $breakpoints: (
-  sm: 540px,
-  md: 992px,
-  lg: 1200px,
+	sm: 540px,
+	md: 992px,
+	lg: 1200px,
 );
 
 // Mixins for each breakpoint
 @mixin sm {
-  @media (max-width: map-get($breakpoints, sm)) {
-    @content;
-  }
+
+	@media (max-width: map-get($breakpoints, sm)) {
+		@content;
+	}
 }
 
 @mixin md {
-  @media (max-width: map-get($breakpoints, md)) {
-    @content;
-  }
+
+	@media (max-width: map-get($breakpoints, md)) {
+		@content;
+	}
 }
 
 @mixin lg {
-  @media (max-width: map-get($breakpoints, lg)) {
-    @content;
-  }
+
+	@media (max-width: map-get($breakpoints, lg)) {
+		@content;
+	}
 }
 
 @mixin xl {
-  @media (max-width: map-get($breakpoints, xl)) {
-    @content;
-  }
+
+	@media (max-width: map-get($breakpoints, xl)) {
+		@content;
+	}
 }

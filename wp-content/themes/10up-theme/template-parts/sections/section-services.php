@@ -15,7 +15,7 @@ extract( $args );
 $services_icons = json_decode( file_get_contents( get_template_directory() . '/assets/images/services-icons.json' ), true );
 ?>
 
-<section class="section">
+<section class="section" id="services">
 	<div class="section__container">
 		<div class="section-heading section-heading--centered">
 				<h4 class="section-heading__accent heading-thin heading-small heading-uppercase"><?php esc_html_e( 'OUR SERVICES', '10up-theme' ); ?></h4>

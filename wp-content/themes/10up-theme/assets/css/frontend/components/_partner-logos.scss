@@ -1,4 +1,5 @@
 $logos-per-row: calc(100% / 4 - 1em);
+$logos-per-row-md: calc(100% / 2 - 1em);
 
 .partner-logos {
 	display: flex;
@@ -21,5 +22,18 @@ $logos-per-row: calc(100% / 4 - 1em);
 		flex-basis: $logos-per-row;
 		margin-bottom: 2em;
 		text-align: center;
+	}
+
+	@include md {
+		
+		&::before,
+		&::after {
+			flex-basis: $logos-per-row-md;
+		}
+
+		&__logo {
+			flex-basis: $logos-per-row-md;
+			width: $logos-per-row-md;
+		}
 	}
 }

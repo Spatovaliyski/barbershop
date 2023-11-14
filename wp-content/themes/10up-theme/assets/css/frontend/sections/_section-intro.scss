@@ -8,7 +8,12 @@
 
 			&__content {
 				display: flex;
+				flex-wrap: wrap;
 				gap: 2em;
+
+				@include md {
+					flex-direction: column;
+				}
 			}
 			
 			&__container {
@@ -20,6 +25,10 @@
 				font-size: 4em;
 				font-weight: 600;
 				margin-bottom: 0;
+
+				@include md {
+					font-size: 2.5em;
+				}
 			}
 
 			&-heading__subtitle {
@@ -29,11 +38,11 @@
 			}
 
 			&-heading {
-				flex: 0 1 calc(100% / 2);
+				flex: 0 1 calc(100% / 2 - 1em);
 			}
 
 			&-figure {
-				flex: 0 1 calc(100% / 2);
+				flex: 0 1 calc(100% / 2 - 1em);
 				margin: 4em 0;
 				position: relative;
 				z-index: 1;
@@ -56,7 +65,7 @@
 				}
 
 				&::before {
-					background-color: #c5b29c;
+					background-color: var(--c-cream-lighter);
 					border-radius: var(--border-radius);
 					content: "";
 					display: block;
@@ -66,6 +75,10 @@
 					top: -2em;
 					width: 280px;
 					z-index: -1;
+				}
+
+				@include md {
+					margin: 2em 0;
 				}
 			}
 		}

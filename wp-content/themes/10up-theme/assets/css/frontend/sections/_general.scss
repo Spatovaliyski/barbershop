@@ -7,11 +7,10 @@
 		max-width: var(--container-max-width);
 		padding-left: var(--container-padding-left);
 		padding-right: var(--container-padding-right);
+	}
 
-		@include md {
-			padding-left: var(--container-padding-left / 2);
-			padding-right: var(--container-padding-right / 2);
-		}
+	@include md {
+		padding: 2em 0;
 	}
 }
 
@@ -41,5 +40,9 @@
 
 	& .heading-uppercase {
 		text-transform: uppercase;
+	}
+
+	@include md {
+		margin-bottom: 2em;
 	}
 }

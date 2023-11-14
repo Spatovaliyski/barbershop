@@ -11,3 +11,9 @@ p {
 		margin-bottom: 0;
 	}
 }
+
+::selection {
+	background-color: var(--c-gray-dark);
+	color: var(--c-white);
+}
+

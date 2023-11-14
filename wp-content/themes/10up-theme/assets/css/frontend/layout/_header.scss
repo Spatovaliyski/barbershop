@@ -1,16 +1,33 @@
+%button-primary {
+	background-color: var(--c-button-primary);
+	border-radius: var(--border-radius);
+	color: var(--c-button-primary-text);
+	padding: 1em 1.5em;
+	transition: 0.2s ease all;
+
+	&:hover {
+		background-color: var(--c-button-primary-hover);
+		color: var(--c-button-primary-text);
+	}
+}
+
+
 .site-header {
 	display: block;
 
 	&__inner {
 		align-items: center;
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		display: flex;
 		gap: 1em;
-		justify-content: space-between;
 		margin: 0 auto;
 		max-width: var(--container-max-width);
 		padding-left: var(--container-padding-left);
 		padding-right: var(--container-padding-right);
+
+		@include md {
+			display: flex;
+			flex-wrap: wrap;
+		}
 	}
 
 	& .menu-item {
@@ -18,9 +35,10 @@
 	}
 
 	& .main-navigation {
-		display: flex;
 		align-items: center;
+		display: flex;
 		justify-self: center;
+		margin-left: auto;
 	}
 
 	& .menu {
@@ -29,39 +47,85 @@
 		list-style-type: none;
 		padding: 0;
 
-		&-toggle {
-			display: none;
-		}
-
 		& a {
 			color: var(--c-gray-dark);
+			display: inline-block;
+			padding: 0.5em;
 			text-decoration: none;
 			transition: color 0.2s ease-in-out;
-			padding: .5em;
-			display: inline-block;
 
 			&:hover {
 				color: var(--c-real-dark);
 			}
+		}
+
+		// Turn this into a mobile menu.
+		@include md {
+			align-items: flex-start;
+			background: var(--c-header-background);
+			color: var(--c-white);
+			display: flex;
+			flex-flow: column wrap;
+			height: auto;
+			justify-content: center;
+			left: 0;
+			margin: 0;
+			min-height: 10em;
+			opacity: 0;
+			padding-left: var(--container-padding-left);
+			padding-right: var(--container-padding-right);
+			position: absolute;
+			top: 100px;
+			transform: translateY(1em);
+			transition: 0.2s ease all;
+			width: 100%;
+			z-index: 99;
+
+			& a {
+				color: var(--c-white);
+			}
+		}
+	}
+
+	& .menu-toggle {
+		display: none;
+
+		@include md {
+			display: block;
 		}
 	}
 
 	& .navigation-appointments {
 		justify-self: flex-end;
 
-		.menu-item a {
-			@extend .button__primary; // Use the primary button styles from _buttons.scss. No wacky styling needed for different non-button cases
+		& .menu-item a {
+
+			@extend %button-primary ; // Use the primary button styles from _buttons.scss. No wacky styling needed for different non-button cases
 		}
+
+		@include md {
+			display: none;
+		}
+	}
+
+	@include md {
+		background-color: var(--c-header-background);
+		padding: var(--site-header-padding);
 	}
 }
 
 .site-branding {
+
 	& a {
-		text-decoration: none;
 		color: var(--c-gray-dark);
+		text-decoration: none;
 
 		&:hover {
 			color: var(--c-real-dark);
+		}
+
+		@include md {
+			color: var(--c-white);
 		}
 	}
 }
@@ -69,4 +133,10 @@
 .site-title {
 	font-size: 1.25em;
 	font-weight: 900;
+	margin: 0;
+}
+
+.is-menu-opened .menu {
+	opacity: 1;
+	transform: translateY(0);
 }

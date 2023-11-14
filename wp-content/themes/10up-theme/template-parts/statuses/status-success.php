@@ -13,7 +13,7 @@ extract( $args );
 	<div class="section__container">
 		<div class="section-heading">
 			<h2 class="section-heading__title"><?php esc_html_e( "You've successfuly booked an appointment", "10up-theme" ); ?></h2>
-			<h3 class="section-heading__subtitle"><?php esc_html_e( "Blow are listed all details for the booking", "10up-theme" ); ?></h3>
+			<h3 class="section-heading__subtitle"><?php esc_html_e( "Below are listed all the details for the booking", "10up-theme" ); ?></h3>
 		</div>
 
 		<div class="section__content">
