@@ -103,6 +103,7 @@ if ( ! function_exists( 'get_booking' ) ) {
 			'services' => $services ?? [],
 			'day'      => '',
 			'hour'     => '',
+			'name'		 => '',
 		];
 	}
 }
@@ -136,109 +137,102 @@ if ( ! function_exists( 'get_total_cost' ) ) {
  */
 ?>
 <div <?php echo get_block_wrapper_attributes(); // phpcs:ignore ?> class="barbershop-block">
-	<h2><?php esc_html_e( 'Barbershop Booking', '10up-theme' ); ?></h2>
-
-	<?php 
-	/**
-	 * Step: Services. This is linked to the Block editor's inspector controls, printing out all available ones
-	 * 
-	 * @uses $services, get_booking()
-	 */
-	?>
-	<div class="barbershop-block__step barbershop-block__step--service active">
-		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose the type of service', '10up-theme' ); ?></h4>
-		<div class="barbershop-block__step-items">
-			<?php foreach ( $services as $service ) : ?>
-				<label>
-					<input type="checkbox" name="services" data-price="<?php echo esc_attr( $service['price'] ); ?>" value="<?php echo esc_attr( $service['name'] ); ?>" <?php checked( in_array( $service['name'], get_booking()['services'], true ) ); ?>>
-					<span><?php echo esc_html( $service['name'] ); ?> - €<?php echo esc_html( $service['price'] ); ?></span>
-				</label>
-			<?php endforeach; ?>
-		</div>
-	</div>
-
-	<?php 
-	/**
-	 * Step: Calendar. We're running with the current month and disabling past days 
-	 * 
-	 * @uses get_days(), get_day_of_week(), get_booking(), 
-	 */
-	?>
-	<div class="barbershop-block__step barbershop-block__step--calendar">
-		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose a day', '10up-theme' ); ?></h4>
-		<div class="barbershop-block__calendar--hint">
-			<p><?php esc_html_e( 'Monday', '10up-theme' ); ?></p>
-			<p><?php esc_html_e( 'Tuesday', '10up-theme' ); ?></p>
-			<p><?php esc_html_e( 'Wednesday', '10up-theme' ); ?></p>
-			<p><?php esc_html_e( 'Thursday', '10up-theme' ); ?></p>
-			<p><?php esc_html_e( 'Friday', '10up-theme' ); ?></p>
-			<p><?php esc_html_e( 'Saturday', '10up-theme' ); ?></p>
-			<p><?php esc_html_e( 'Sunday', '10up-theme' ); ?></p>
-		</div>
-		<div class="barbershop-block__step-items" data-startday="<?php echo esc_attr( get_day_of_week() ); ?>">
-			<?php foreach ( get_days() as $day ) : ?>
-				<label>
-					<input type="radio" name="day" value="<?php echo esc_attr( $day['date']->format( 'Y-m-d' ) ); ?>" <?php checked( get_booking()['day'] === $day['date']->format( 'Y-m-d' ) ); ?> <?php disabled( $day['is_past_day'] ); ?>>
-					<span class="<?php echo $day['is_past_day'] ? 'past-date' : ''; ?>"><?php echo esc_html( $day['date']->format( 'j' ) ); ?></span>
-				</label>
-			<?php endforeach; ?>
-		</div>
-	</div>
-
-	<?php 
-	/**
-	 * Step: Hour picker. Picks an available hour from the provided list. Currently hardcoded amount of hours
-	 * 
-	 * @uses get_hours(), get_booking()
-	 */
-	?>
-	<div class="barbershop-block__step barbershop-block__step--hour">
-		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose a timeslot', '10up-theme' ); ?></h4>
-		<div class="barbershop-block__step-items">
-			<?php foreach ( get_hours() as $hour ) : ?>
-				<label>
-					<input type="radio" name="hour" value="<?php echo esc_attr( $hour ); ?>" <?php checked( get_booking()['hour'] === $hour ); ?>>
-					<span><?php echo esc_html( $hour ); ?></span>
-				</label>
-			<?php endforeach; ?>
-		</div>
-	</div>
-
-	<?php 
-	/**
-	 * Step: Name. Linked with the final step. We use this input to generate the Custom Post Type's title
-	 */
-	?>
-	<div class="barbershop-block__step barbershop-block__step--name">
-		<h4 class="barbershop-block__step-title"><?php esc_html_e( 'And finally, Your name and surname', '10up-theme' ); ?></h4>
-		<div class="barbershop-block__step-items">
-			<div class="barbershop-block__textinput">
-				<label for="person_name"><?php esc_html_e( 'Name and Surname', '10up-theme' ); ?></label>
-				<input type="text" name="person_name" required>
+	<form id="barbershop_form" method="post">
+		<?php 
+		/**
+		 * Step: Services. This is linked to the Block editor's inspector controls, printing out all available ones
+		 * 
+		 * @uses $services, get_booking()
+		 */
+		?>
+		<div class="barbershop-block__step barbershop-block__step--service active">
+			<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose the type of service', '10up-theme' ); ?></h4>
+			<div class="barbershop-block__step-items">
+				<?php foreach ( $services as $service ) : ?>
+					<label>
+						<input type="checkbox" name="services" data-price="<?php echo esc_attr( $service['price'] ); ?>" value="<?php echo esc_attr( $service['name'] ); ?>" <?php checked( in_array( $service['name'], get_booking()['services'], true ) ); ?>>
+						<span><?php echo esc_html( $service['name'] ); ?> - €<?php echo esc_html( $service['price'] ); ?></span>
+					</label>
+				<?php endforeach; ?>
 			</div>
 		</div>
-	</div>
 
-	<?php 
-	/**
-	 * Step: Final. Let's build and push the data through the API
-	 * 
-	 * @uses get_booking(), get_total_cost()
-	 */
-	?>
-	<div class="barbershop-block__step barbershop-block__step--final">
-		<div class="barbershop-block__metadata">
-			<span><?php esc_html_e( 'Total cost:', '10up-theme' ); ?> €</span>
-			<span id="total-cost"><?php echo esc_html( get_total_cost(get_booking()) ); ?></span>
+		<?php 
+		/**
+		 * Step: Calendar. We're running with the current month and disabling past days 
+		 * 
+		 * @uses get_days(), get_day_of_week(), get_booking(), 
+		 */
+		?>
+		<div class="barbershop-block__step barbershop-block__step--calendar">
+			<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose a day', '10up-theme' ); ?></h4>
+			<div class="barbershop-block__calendar--hint">
+				<p><?php esc_html_e( 'Monday', '10up-theme' ); ?></p>
+				<p><?php esc_html_e( 'Tuesday', '10up-theme' ); ?></p>
+				<p><?php esc_html_e( 'Wednesday', '10up-theme' ); ?></p>
+				<p><?php esc_html_e( 'Thursday', '10up-theme' ); ?></p>
+				<p><?php esc_html_e( 'Friday', '10up-theme' ); ?></p>
+				<p><?php esc_html_e( 'Saturday', '10up-theme' ); ?></p>
+				<p><?php esc_html_e( 'Sunday', '10up-theme' ); ?></p>
+			</div>
+			<div class="barbershop-block__step-items" data-startday="<?php echo esc_attr( get_day_of_week() ); ?>">
+				<?php foreach ( get_days() as $day ) : ?>
+					<label>
+						<input type="radio" name="day" value="<?php echo esc_attr( $day['date']->format( 'Y-m-d' ) ); ?>" <?php checked( get_booking()['day'] === $day['date']->format( 'Y-m-d' ) ); ?> <?php disabled( $day['is_past_day'] ); ?>>
+						<span class="<?php echo $day['is_past_day'] ? 'past-date' : ''; ?>"><?php echo esc_html( $day['date']->format( 'j' ) ); ?></span>
+					</label>
+				<?php endforeach; ?>
+			</div>
 		</div>
 
-		<form>
-			<?php foreach ( get_booking()['services'] as $service ) : ?>
-				<input type="hidden" name="services[]" value="<?php echo esc_attr( $service ); ?>">
-			<?php endforeach; ?>
-			<input type="hidden" name="day" value="<?php echo esc_attr( get_booking()['day'] ); ?>">
-			<input type="hidden" name="hour" value="<?php echo esc_attr( get_booking()['hour'] ); ?>">
+		<?php 
+		/**
+		 * Step: Hour picker. Picks an available hour from the provided list. Currently hardcoded amount of hours
+		 * 
+		 * @uses get_hours(), get_booking()
+		 */
+		?>
+		<div class="barbershop-block__step barbershop-block__step--hour">
+			<h4 class="barbershop-block__step-title"><?php esc_html_e( 'Choose a timeslot', '10up-theme' ); ?></h4>
+			<div class="barbershop-block__step-items">
+				<?php foreach ( get_hours() as $hour ) : ?>
+					<label>
+						<input type="radio" name="hour" value="<?php echo esc_attr( $hour ); ?>" <?php checked( get_booking()['hour'] === $hour ); ?>>
+						<span><?php echo esc_html( $hour ); ?></span>
+					</label>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
+		<?php 
+		/**
+		 * Step: Name. Linked with the final step. We use this input to generate the Custom Post Type's title
+		 */
+		?>
+		<div class="barbershop-block__step barbershop-block__step--name">
+			<h4 class="barbershop-block__step-title"><?php esc_html_e( 'And finally, Your First and Last name', '10up-theme' ); ?></h4>
+			<div class="barbershop-block__step-items">
+				<div class="barbershop-block__textinput">
+					<label for="customer"><?php esc_html_e( 'First and Last name', '10up-theme' ); ?></label>
+					<input type="text" name="customer" required />
+				</div>
+			</div>
+		</div>
+
+		<?php 
+		/**
+		 * Step: Final. Let's build and push the data through the API
+		 * 
+		 * @uses get_booking(), get_total_cost()
+		 */
+		?>
+		<div class="barbershop-block__step barbershop-block__step--final">
+			<div class="barbershop-block__metadata">
+				<span><?php esc_html_e( 'Total cost:', '10up-theme' ); ?> €</span>
+				<span id="total-cost"><?php echo esc_html( get_total_cost(get_booking()) ); ?></span>
+			</div>
+
 			<button id="create_booking" class="button button__primary" type="submit"><?php esc_html_e( 'Book Now', '10up-theme' ); ?></button>
-		</form>
-	</div>
+		</div>
+	</form>
 </div>

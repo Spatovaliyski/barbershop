@@ -88,8 +88,12 @@ class Bookings extends \TenUpPlugin\Module {
 
 		// And finally... register it.
 		register_post_type( 'booking', $args );
-	}
 
+		// Add the filter to disable redirecting 404 pages to guessed URLs.
+		add_filter( 'do_redirect_guess_404_permalink', '__return_false' );
+		add_filter( 'strict_redirect_guess_404_permalink', '__return_true' );
+	}
+	
 	/**
 	 * Set the template for the booking editor, loading the custom block from the theme.
 	 */

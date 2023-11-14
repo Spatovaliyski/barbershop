@@ -22,7 +22,7 @@ const _initBarbershopBlock = () => {
 	const totalCost = document.querySelector('#total-cost');
 	const days = document.querySelectorAll('input[name="day"]');
 	const hours = document.querySelectorAll('input[name="hour"]');
-	const personName = document.querySelector('input[name="person_name"]');
+	const personName = document.querySelector('input[name="customer"]');
 	const submit = document.querySelector('#create_booking');
 
 	/**
@@ -83,6 +83,10 @@ const _initBarbershopBlock = () => {
 	 * Submit the booking to our CPT
 	 */
 	submit.addEventListener('click', () => {
+		if (personName.value === '') {
+			return;
+		}
+
 		const customerName = personName.value;
 		const selectedDay = document.querySelector('input[name="day"]:checked').value;
 		const selectedHour = document.querySelector('input[name="hour"]:checked').value;
@@ -91,7 +95,7 @@ const _initBarbershopBlock = () => {
 
 		let servicesText = '';
 		checkedServices.forEach((service) => {
-			servicesText += `- ${service.value} - €${service.dataset.price}\n`;
+			servicesText += `- ${service.value} - €${service.dataset.price}\n</br>`;
 		});
 
 		// Format date without milliseconds and adjust time zone
@@ -113,7 +117,7 @@ const _initBarbershopBlock = () => {
 
 		/**
 		 * Send the booking to the server.
-		 *
+		 * 
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 		 */
 		fetch('/wp-json/tenup-plugin/v1/bookings', {
@@ -128,14 +132,16 @@ const _initBarbershopBlock = () => {
 			}),
 		})
 			.then((response) => {
-				if (response.ok) {
-					window.location.href = '/success/';
-				} else {
-					window.location.href = '/fail/';
-				}
+				const params = new URLSearchParams({
+					status: response.ok ? 'success' : 'fail',
+					customer: customerName,
+					datetime: formattedDatetime,
+					services: servicesText,
+				});
+				window.location.href = `/status/?${params.toString()}`;
 			})
-			.catch(() => {
-				window.location.href = '/fail/';
+			.catch((error) => {
+				console.error('Error:', error);
 			});
 	});
 };

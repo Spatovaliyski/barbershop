@@ -137,12 +137,11 @@ const BarbershopEdit = (props) => {
 
 	return (
 		<div {...blockProps}>
-			<h2>{__('Barbershop Booking')}</h2>
 			<div className="barbershop-block__step barbershop-block__step--service active">
 				<h4 className="barbershop-block__step-title">{__('Choose the type of service')}</h4>
 				<div className="barbershop-block__step-items">
 					{attributes.services.map((service) => (
-						<label htmlFor={`service-${service.name}`} key={service.name}>
+						<label key={service.name}>
 							<input
 								type="checkbox"
 								name={`service-${service.name}`}
@@ -174,7 +173,7 @@ const BarbershopEdit = (props) => {
 					</div>
 					<div className="barbershop-block__step-items" data-startday={dayOfWeek}>
 						{days.map(({ date, isPastDate }) => (
-							<label htmlFor={date} key={date}>
+							<label key={date}>
 								<input
 									type="radio"
 									name={date}
@@ -203,7 +202,7 @@ const BarbershopEdit = (props) => {
 					<h4 className="barbershop-block__step-title">{__('Choose a timeslot')}</h4>
 					<div className="barbershop-block__step-items">
 						{hours.map((hour) => (
-							<label htmlFor={hour} key={hour}>
+							<label key={hour}>
 								<input
 									type="radio"
 									name={hour}
@@ -223,12 +222,12 @@ const BarbershopEdit = (props) => {
 			{booking.hour && (
 				<div className="barbershop-block__step barbershop-block__step--name active">
 					<h4 className="barbershop-block__step-title">
-						{__('And finally, Your name and surname')}
+						{__('And finally, Your First and Last name')}
 					</h4>
 					<div className="barbershop-block__step-items">
 						<TextControl
 							className="barbershop-block__textinput"
-							label={__('Name and Surname')}
+							label={__('First and Last name')}
 							value={booking.name}
 							onChange={(value) => setBooking({ ...booking, name: value })}
 						/>
