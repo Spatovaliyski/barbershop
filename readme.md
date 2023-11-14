@@ -16,7 +16,7 @@ It's a barebones simple installation without any complicated features
 3. **Move** the files to your WP Installation
 4. **Activate** the 10up Theme
 
-##Set up details:
+## Set up details:
 1. Create a new page, set it up as a Static Home page and pick the 'Booking Landing Page' template form the page editor
 2.  Create a status page with the /status/ slug
 3.  Create a /book-an-hour/ (or any slug) and add the "Barbershop" Gutenberg block
