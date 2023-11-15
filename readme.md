@@ -1,5 +1,11 @@
 # Barbershop
 
+# Demo
+https://barbershop.spatovaliyski.com/
+WP Admin Login:
+admin
+@Admin123
+
 ## Description
 
 This is a static theme using the 10up Scaffold with a Gutenberg block to book appointments.
