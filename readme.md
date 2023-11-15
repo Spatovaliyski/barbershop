@@ -2,9 +2,12 @@
 
 # Demo
 https://barbershop.spatovaliyski.com/
+
 WP Admin Login:
-admin
-@Admin123
+
+Username: admin
+
+Password: Admin123
 
 ## Description
 
