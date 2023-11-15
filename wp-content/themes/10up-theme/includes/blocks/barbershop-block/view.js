@@ -23,7 +23,6 @@ const _initBarbershopBlock = () => {
 	const days = document.querySelectorAll('input[name="day"]');
 	const hours = document.querySelectorAll('input[name="hour"]');
 	const personName = document.querySelector('input[name="customer"]');
-	const submit = document.querySelector('#create_booking');
 
 	/**
 	 * Get the total cost of the selected services.
@@ -82,7 +81,11 @@ const _initBarbershopBlock = () => {
 	/**
 	 * Submit the booking to our CPT
 	 */
-	submit.addEventListener('click', () => {
+	document.getElementById('barbershop_form').addEventListener('submit', (event) => {
+		// Prevent the form from submitting, handle all logic below
+		event.preventDefault();
+
+		// If the Person name is empty, don't submit the form
 		if (personName.value === '') {
 			return;
 		}
@@ -138,7 +141,7 @@ const _initBarbershopBlock = () => {
 				window.location.href = `/status/?${params.toString()}`;
 			})
 			.catch((error) => {
-				console.error('Error:', error);
+				console.error('Error:', error); // Generates warning from [eslint], this is intentional here
 			});
 	});
 };

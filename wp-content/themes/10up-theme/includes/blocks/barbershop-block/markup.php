@@ -137,7 +137,7 @@ if ( ! function_exists( 'get_total_cost' ) ) {
  */
 ?>
 <div <?php echo get_block_wrapper_attributes(); // phpcs:ignore ?> class="barbershop-block">
-	<form id="barbershop_form" method="post">
+	<form id="barbershop_form" method="post" action="/status">
 		<?php 
 		/**
 		 * Step: Services. This is linked to the Block editor's inspector controls, printing out all available ones
