@@ -91,15 +91,12 @@ const _initBarbershopBlock = () => {
 		const selectedDay = document.querySelector('input[name="day"]:checked').value;
 		const selectedHour = document.querySelector('input[name="hour"]:checked').value;
 		const checkedServices = document.querySelectorAll('input[name="services"]:checked');
-		const bookingDatetime = new Date(`${selectedDay}T${selectedHour}`);
+		const bookingDatetime = new Date(`${selectedDay}T${selectedHour}:00Z`);
 
 		let servicesText = '';
 		checkedServices.forEach((service) => {
 			servicesText += `- ${service.value} - €${service.dataset.price}\n</br>`;
 		});
-
-		// Format date without milliseconds and adjust time zone
-		const formattedDatetime = bookingDatetime.toISOString().slice(0, -5);
 
 		/**
 		 * Format date to be readable by humans.
@@ -117,7 +114,7 @@ const _initBarbershopBlock = () => {
 
 		/**
 		 * Send the booking to the server.
-		 * 
+		 *
 		 * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 		 */
 		fetch('/wp-json/tenup-plugin/v1/bookings', {
@@ -128,14 +125,14 @@ const _initBarbershopBlock = () => {
 			body: JSON.stringify({
 				title: `${customerName} - ${readableDatetime}`,
 				content: `${customerName} has requested the following services:\n${servicesText}`,
-				booking_datetime: formattedDatetime,
+				booking_datetime: bookingDatetime.toISOString(),
 			}),
 		})
 			.then((response) => {
 				const params = new URLSearchParams({
 					status: response.ok ? 'success' : 'fail',
 					customer: customerName,
-					datetime: formattedDatetime,
+					datetime: bookingDatetime.toISOString(),
 					services: servicesText,
 				});
 				window.location.href = `/status/?${params.toString()}`;
